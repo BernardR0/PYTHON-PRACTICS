@@ -1,0 +1,13 @@
+def squaredsideofn(n):
+
+    for i in range(n):
+        lst = list('*' * n for j in range(n))
+
+    return lst 
+
+n = int(input("Input: "))
+
+lista = squaredsideofn(n)
+
+print(lista)
+   
