@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-def pedir_inteiro(mensagem, minimo, maximo):
+def pedir_inteiro(n, minimo, maximo):
     while True:
         try:
-            valor = int(input(mensagem))
+            valor = int(input(n))
             if minimo <= valor <= maximo:
                 return valor
             else:
@@ -14,16 +14,17 @@ def pedir_inteiro(mensagem, minimo, maximo):
         except ValueError:
             print(" Entrada inválida. Digite um número inteiro.")
 
-def pedir_float(mensagem, minimo, maximo):
+def pedir_float(n, minimo, maximo):
     while True:
         try:
-            valor = float(input(mensagem))
+            valor = float(input(n))
             if minimo <= valor <= maximo:
                 return valor
             else:
                 print(f" Digite um valor entre {minimo} e {maximo}.")
         except ValueError:
             print("Entrada inválida. Digite um número (ex: 0.5).")
+            
 
 qtde_pessoas = ctrl.Antecedent(np.arange(0,500,1),'pessoas')
 qtde_pessoas.automf(number=3, names=["baixo", "medio", "alto"])
@@ -31,7 +32,7 @@ qtde_pessoas.automf(number=3, names=["baixo", "medio", "alto"])
 qtde_vagas = ctrl.Antecedent(np.arange(0,300,1),'vagas')
 qtde_vagas.automf(number=3, names=["baixo", "medio", "alto"])
 
-prioridade = ctrl.Antecedent(np.arange(0,1),'prioridade')
+prioridade = ctrl.Antecedent(np.arange(0, 1),'prioridade')
 prioridade.automf(number=3, names=["baixo", "medio", "alto"])
 
 encaminhamento = ctrl.Consequent(np.arange(0,100,1),'encaminhamento')
