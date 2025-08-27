@@ -12,7 +12,7 @@ def pedir_inteiro(n, minimo, maximo):
             else:
                 print(f" Digite um valor entre {minimo} e {maximo}.")
         except ValueError:
-            print(" Entrada inválida. Digite um número inteiro.")
+            print("Entrada inválida. Digite um número inteiro.")
 
 def pedir_float(n, minimo, maximo):
     while True:
@@ -32,7 +32,7 @@ qtde_pessoas.automf(number=3, names=["baixo", "medio", "alto"])
 qtde_vagas = ctrl.Antecedent(np.arange(0,300,1),'vagas')
 qtde_vagas.automf(number=3, names=["baixo", "medio", "alto"])
 
-prioridade = ctrl.Antecedent(np.arange(0, 1),'prioridade')
+prioridade = ctrl.Antecedent(np.arange(0, 1.01, 0.01),'prioridade')
 prioridade.automf(number=3, names=["baixo", "medio", "alto"])
 
 encaminhamento = ctrl.Consequent(np.arange(0,100,1),'encaminhamento')
@@ -72,40 +72,43 @@ sistema_ctrl = ctrl.ControlSystem([regra1, regra2, regra3, regra4, regra5,
                                   regra6, regra7, regra8, regra9, regra10, regra11, regra12, regra13 ])
 sistema = ctrl.ControlSystemSimulation(sistema_ctrl)
 
+while True:
+    print("""
+    ====================================
+    Sistema de Encaminhamento
+    ------------------------------------
+    Digite:
+    - Número de pessoas (0-500)
+    - Número de vagas (0-300)
+    - Prioridade (0 a 1, onde 0 = baixa, 1 = alta)
+    ====================================
+    """)
 
-print("""
-====================================
- Sistema de Encaminhamento Fuzzy
-------------------------------------
-Digite:
-- Número de pessoas (0-500)
-- Número de vagas (0-300)
-- Prioridade (0 a 1, onde 0 = baixa, 1 = alta)
-====================================
-""")
+    pessoas = pedir_inteiro("Digite o número de pessoas (0-500 ou -1 para sair): ", -1, 500)
+    if pessoas == -1:
+        print("Encerrando o sistema!")
+        break
 
-
-
-sistema.input['pessoas'] = pedir_inteiro("Digite o número de pessoas (0-500): ", 0, 500)
-sistema.input['vagas'] = pedir_inteiro("Digite o número de vagas (0-300): ", 0, 300)
-sistema.input['prioridade'] = pedir_float("Digite a prioridade (0-1): ", 0, 1)
-
-
-sistema.compute()
-
-resultado = sistema.output['encaminhamento']
-
-if resultado < 40:
-    status = "Recusado"
-elif resultado < 60:
-    status = "Neutro"
-else:
-    status = "Aprovado"
-
-print(f"\nResultado fuzzy: {resultado:.2f}")
-print(f"Encaminhamento final: {status}")
+    sistema.input['pessoas'] = pessoas
+    sistema.input['vagas'] = pedir_inteiro("Digite o número de vagas (0-300): ", 0, 300)
+    sistema.input['prioridade'] = pedir_float("Digite a prioridade (0-1): ", 0, 1)
 
 
-encaminhamento.view(sim=sistema)
-plt.show()
+    sistema.compute()
+
+    resultado = sistema.output['encaminhamento']
+
+    if resultado < 40:
+        status = "Recusado"
+    elif resultado < 60:
+        status = "Neutro"
+    else:
+        status = "Aprovado"
+
+    print(f"\nResultado fuzzy: {resultado:.2f}")
+    print(f"Encaminhamento final: {status}")
+
+
+    encaminhamento.view(sim=sistema)
+    plt.show()
 
